@@ -1,8 +1,8 @@
 import express from "express";
 const app = express();
-import { createTodo } from "./types";
-import { updateTodo } from "./types";
-import { todo } from "./db";
+import { createTodo } from "./types.js";
+import { updateTodo } from "./types.js";
+import { todo } from "./db.js";
 
 app.use(express.json());
 
@@ -31,7 +31,11 @@ app.post("/todo",async(req,res)=>{
 
 app.get("/todos",async(req,res)=>{
 
-    const allTodos = await todo.find();
+    const allTodos = await todo.find({});
+
+    res.json({
+        allTodos
+    })
 
 })
 
@@ -48,7 +52,7 @@ app.put("/completed",async(req,res)=>{
         return;
     }
 
-    await todo.update({
+    await todo.updateOne({
         _id : req.body.id,
     },{
         completed: true
